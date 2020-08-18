@@ -1,8 +1,28 @@
 .container {
-  position: absolute;
-  top: 30%;
-  left: 10px;
+  box-sizing: border-box;
+  height: 70px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: #000;
   text-align: center;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 5px;
+  /* 窗口可拖拽，开发者工具打开时不可用 */
+  -webkit-app-region: drag;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 0 0;
+  box-sizing: border-box;
+  flex: 1;
 }
 
 .container h2 {
@@ -12,3 +32,72 @@
 .container a {
   font-size: 1.4rem;
 }
+
+.leftNav {
+  width: 128px;
+  display: flex;
+}
+
+.rightNav {
+  width: 108px;
+  display: flex;
+}
+
+.inputBox {
+  flex: 1;
+  background-color: #fff;
+  color: rgba(0,0,0,.85);
+}
+
+.miniInput:hover {
+  box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+  border-color: rgba(223,225,229,0);
+  border-radius: 30px;
+}
+
+.miniInput {
+  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 11px;
+  color: rgba(0,0,0,.65);
+  font-size: 14px;
+  line-height: 1.5715;
+  background: #f9f9f9;
+  border-radius: 30px;
+  transition: all .3s;
+  border: none;
+}
+
+.miniInput:placeholder-shown {
+  text-overflow: ellipsis;
+}
+
+input {
+  outline:none
+}
+
+.item {
+  margin-left: 15px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.active:hover {
+  background: #f0f0f0;
+}
+
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: #000;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.disable {
+  fill: #999;
+}
+

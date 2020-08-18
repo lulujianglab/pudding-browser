@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, BrowserView } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -53,13 +53,14 @@ const createWindow = async () => {
     process.env.NODE_ENV === 'development' ||
     process.env.DEBUG_PROD === 'true'
   ) {
-    await installExtensions();
+    installExtensions();
   }
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 1300,
+    height: 800,
+    titleBarStyle: 'hidden',
     webPreferences:
       (process.env.NODE_ENV === 'development' ||
         process.env.E2E_BUILD === 'true') &&
@@ -71,6 +72,27 @@ const createWindow = async () => {
             preload: path.join(__dirname, 'dist/renderer.prod.js'),
           },
   });
+
+  let view: BrowserView = new BrowserView()
+  mainWindow.setBrowserView(view)
+
+  // BrowserView 画布
+  let bounds = mainWindow?.getBounds()
+  let y = 70
+  view.setBounds({
+    x: 0,
+    y,
+    width: Number(bounds?.width),
+    height: Number(bounds?.height) / 2 - y
+  })
+
+  view.webContents.loadURL('https://meituan.com')
+  view.setAutoResize({
+    width: true,
+    height: true,
+    horizontal: true,
+    vertical: true
+  })
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
