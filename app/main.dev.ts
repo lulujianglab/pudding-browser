@@ -56,11 +56,12 @@ const createWindow = async () => {
     installExtensions();
   }
 
+  // 创建一个浏览器窗口
   mainWindow = new BrowserWindow({
     show: false,
     width: 1300,
     height: 800,
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'hidden', // 窗口标题栏的样式 default - 标准灰色不透明的Mac标题栏 hidden -  隐藏标题栏, 内容充满整个窗口
     webPreferences:
       (process.env.NODE_ENV === 'development' ||
         process.env.E2E_BUILD === 'true') &&
@@ -73,27 +74,33 @@ const createWindow = async () => {
           },
   });
 
-  let view: BrowserView = new BrowserView()
-  mainWindow.setBrowserView(view)
+  // 创建一个新的视图
+  const view: BrowserView = new BrowserView();
+  // 将视图装载在浏览器窗口中
+  mainWindow.setBrowserView(view);
 
-  // BrowserView 画布
-  let bounds = mainWindow?.getBounds()
-  let y = 70
+  // 无论当前的窗口状态为：最大化、最小化或者全屏，这个方法都将得到窗口在正常显示状态下的位置信息以及大小信息
+  const bounds = mainWindow?.getBounds();
+  const y = 70;
   view.setBounds({
+    // 调整视图的大小，并将它移动到窗口边界
     x: 0,
     y,
     width: Number(bounds?.width),
-    height: Number(bounds?.height) / 2 - y
-  })
+    height: Number(bounds?.height) - y,
+  });
 
-  view.webContents.loadURL('https://meituan.com')
+  // 嵌入页面内容
+  view.webContents.loadURL('https://waimai.meituan.com');
+  // 缩放时页面内容不变
   view.setAutoResize({
     width: true,
     height: true,
     horizontal: true,
-    vertical: true
-  })
+    vertical: true,
+  });
 
+  // 窗口装载应用的 app.html 页面
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
@@ -110,7 +117,9 @@ const createWindow = async () => {
     }
   });
 
+  // 当窗口关闭时调用的方法
   mainWindow.on('closed', () => {
+    // 解除窗口对象的引用
     mainWindow = null;
   });
 
@@ -138,6 +147,7 @@ if (process.env.E2E_BUILD === 'true') {
   // eslint-disable-next-line promise/catch-or-return
   app.whenReady().then(createWindow);
 } else {
+  // 当 Electron 完成初始化并且已经创建了浏览器窗口，则该方法将会被调用
   app.on('ready', createWindow);
 }
 
